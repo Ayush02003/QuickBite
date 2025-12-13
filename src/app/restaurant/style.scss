@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.container {
+  h1{
+    padding-bottom: 20px;
+  }
+  .header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 20px;
+    ul {
+      display: flex;
+      li {
+        list-style: none;
+        padding: 10px;
+        a {
+          text-decoration: none;
+          color: black;
+          &:hover {
+            color: lightslategray;
+          }
+        }
+      }
+    }
+  }
+  .footer-wrapper {
+    position: fixed;
+    bottom: 0;
+    padding-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    background: white;
+  }
+}
