@@ -11,10 +11,9 @@ const restaurant = () => {
     <>
       <div className="container">
         <RestaurantHeader />
+        <div className="main">
         <h1>Restaurant Login/Signup Page </h1>
         {login ? <RestaurantLogin /> : <RestaurantSignUp />}
-
-        <div>
           <button className="button-link" onClick={() => setLogin(!login)}>
             {login
               ? "Do no have account? SignUp"
