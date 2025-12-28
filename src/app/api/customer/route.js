@@ -12,7 +12,7 @@ export async function GET(request) {
     filter = { city: { $regex: new RegExp(loc, "i") } };
   } else if (queryParams.get("restaurant")) {
     let loc = queryParams.get("restaurant");
-    filter = { name: { $regex: new RegExp(loc, "i") } };
+    filter = { restaurantName: { $regex: new RegExp(loc, "i") } };
   }
   let result = await Restaurant.find(filter);
   return NextResponse.json({ success: true, result });

@@ -16,7 +16,7 @@ const restaurant = () => {
         {login ? <RestaurantLogin /> : <RestaurantSignUp />}
           <button className="button-link" onClick={() => setLogin(!login)}>
             {login
-              ? "Do no have account? SignUp"
+              ? "Don't have an account? SignUp"
               : "Already have Account? Login"}
           </button>
         </div>

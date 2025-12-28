@@ -3,25 +3,67 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const RestaurantHeader = () => {
-  const [details, setDetails] = useState();
+const RestaurantHeader = (props) => {
+  const [userStorage, setUserStorage] = useState();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      setUserStorage(JSON.parse(storedUser));
+    }
+  }, []);
+  const [cartNumber, setCartNumber] = useState(0);
+  const [cartItem, setCartItem] = useState([]);
+  // const [details, setDetails] = useState();
   const router = useRouter();
   const pathName = usePathname();
   useEffect(() => {
-    // let data = localStorage.getItem("restaurantUser");
-    // if (!data) {
-    //   router.push("/restaurant");
-    // } else if (data && pathName == "/restaurant") {
-    //   router.push("/restaurant/dashboard");
-    // } else {
-    //   setDetails(JSON.parse(data));
-    // }
-  }, [router, pathName]);
-  //   const logout = () => {
-  //     localStorage.removeItem("restaurantUser");
-  //     router.push("/restaurant");
-  //   };
-//   console.log(details);
+    const cartStorage = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartItem(cartStorage);
+    setCartNumber(cartStorage?.length);
+  }, []);
+  useEffect(() => {
+    if (!props.cartData) return;
+
+    const item = { ...props.cartData };
+    delete item.time;
+
+    setCartItem((prev) => {
+      if (prev.length > 0 && prev[0].resto_id !== item.resto_id) {
+        localStorage.setItem("cart", JSON.stringify([item]));
+        setCartNumber(1);
+        return [item];
+      }
+      const updated = [...prev, item];
+      localStorage.setItem("cart", JSON.stringify(updated));
+      setCartNumber(updated.length);
+      return updated;
+    });
+  }, [props.cartData]);
+
+  useEffect(() => {
+    if (!props.removeCartData) return;
+
+    setCartItem((prev) => {
+      const updated = prev.filter(
+        (item) => item._id !== props.removeCartData.id
+      );
+      setCartNumber(updated.length);
+      if (updated.length === 0) {
+        localStorage.removeItem("cart");
+      } else {
+        localStorage.setItem("cart", JSON.stringify(updated));
+      }
+
+      return updated;
+    });
+  }, [props.removeCartData]);
+ 
+  const logout = ()=>{
+    localStorage.removeItem("user")
+    router.push('/user-auth')
+  }
   return (
     <div>
       <div className="header-wrapper">
@@ -33,14 +75,31 @@ const RestaurantHeader = () => {
           <li>
             <Link href="/">Home</Link>
           </li>
+          {userStorage ? (
+            <>
+            <li>
+             <Link href="/">{userStorage?.name}</Link>
+            </li>
+            <li>
+              <Link href="/" onClick={ logout}>Logout</Link>
+            </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link href="/">Login</Link>
+              </li>
+              <li>
+                <Link href={"/user-auth"}>
+                  <button>Signup</button>
+                </Link>
+              </li>
+            </>
+          )}
           <li>
-            <Link href="/">Login</Link>
-          </li>
-          <li>
-            <button>Signup</button>
-          </li>
-          <li>
-            <Link href="/">Cart(0)</Link>
+            <Link href={cartNumber ? "/cart" : "#"}>
+              Cart({cartNumber ? cartNumber : 0})
+            </Link>
           </li>
           <li>
             <Link href="/">Add Restaurant</Link>

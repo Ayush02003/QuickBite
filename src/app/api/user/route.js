@@ -1,17 +1,8 @@
-import Restaurant from "@/app/lib/restaurantsModel";
 import mongoose from "mongoose";
+import { userSchema } from "@/app/lib/userModel";
+
 import { NextResponse } from "next/server";
 import { connectionStr } from "@/app/lib/db";
-
-export async function GET() {
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(connectionStr);
-  }
-
-  const data = await Restaurant.find();
-  return NextResponse.json({ result: true, data });
-}
-
 export async function POST(request) {
   try {
     let payload = await request.json();
@@ -21,19 +12,20 @@ export async function POST(request) {
     }
 
     if (payload.login) {
-      result = await Restaurant.findOne({
+      result = await userSchema.findOne({
         email: payload.email,
         password: payload.password,
       });
     } else {
-      const existingUser = await Restaurant.findOne({ email: payload.email });
+      const existingUser = await userSchema.findOne({ email: payload.email });
       if (existingUser) {
         return NextResponse.json({
           success: false,
-          message: "Email already registered",
+          result: "Email already registered !",
         });
       }
-      result = await Restaurant.create(payload);
+
+      result = await userSchema.create(payload);
     }
     if (!result) {
       return NextResponse.json({ success: false, result });
