@@ -35,7 +35,7 @@ const Page = (props) => {
     setFoodItems(data.foodItems);
   };
   const addToCart = (item) => {
-    setCartData({ ...item, time: Date.now() });
+    setCartData({ ...item, qty:1,time: Date.now() });
     setCartIds((prev) => [...prev, item._id]);
   };
   const removeFromCart = (id) => {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const RestaurantHeader = (props) => {
+const CustomerHeader = (props) => {
   const [userStorage, setUserStorage] = useState();
 
   useEffect(() => {
@@ -59,11 +59,11 @@ const RestaurantHeader = (props) => {
       return updated;
     });
   }, [props.removeCartData]);
- 
-  const logout = ()=>{
-    localStorage.removeItem("user")
-    router.push('/user-auth')
-  }
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    router.push("/user-auth");
+  };
   return (
     <div>
       <div className="header-wrapper">
@@ -77,22 +77,17 @@ const RestaurantHeader = (props) => {
           </li>
           {userStorage ? (
             <>
-            <li>
-             <Link href="/">{userStorage?.name}</Link>
-            </li>
-            <li>
-              <Link href="/" onClick={ logout}>Logout</Link>
-            </li>
+              <li>
+                <Link href="/myprofile">{userStorage?.name}</Link>
+              </li>
+              <li>
+                <button onClick={logout}>Logout</button>
+              </li>
             </>
           ) : (
             <>
               <li>
-                <Link href="/">Login</Link>
-              </li>
-              <li>
-                <Link href={"/user-auth"}>
-                  <button>Signup</button>
-                </Link>
+                <Link href="/user-auth"><button>Login</button></Link>
               </li>
             </>
           )}
@@ -104,10 +99,13 @@ const RestaurantHeader = (props) => {
           <li>
             <Link href="/">Add Restaurant</Link>
           </li>
+          <li>
+            <Link href="/deliverypartner">Delivery Partner</Link>
+          </li>
         </ul>
       </div>
     </div>
   );
 };
 
-export default RestaurantHeader;
+export default CustomerHeader;

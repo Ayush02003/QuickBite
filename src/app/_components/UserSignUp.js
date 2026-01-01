@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const UserSignUp = () => {
-  const router = useRouter()
+const UserSignUp = (props) => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -64,10 +64,13 @@ const UserSignUp = () => {
         const { result } = data;
         delete result.password;
         localStorage.setItem("user", JSON.stringify(result));
-        router.push("/");
-      }
-      else{
-        alert(data.result)
+        if (props.redirect) {
+          router.push("/order");
+        } else {
+          router.push("/");
+        }
+      } else {
+        alert(data.result);
       }
     } catch (error) {
       console.log("Signup failed", error);
