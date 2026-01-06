@@ -1,0 +1,28 @@
+.input-wrapper{
+    margin: 10px;
+}
+.input-field{
+    /* width: 200px; */
+    /* height: 30px; */
+}
+.button{
+    width: 200px;
+    height: 30px;
+}
+.main{
+    width: 60%;
+    margin: auto;
+}
+.main h1{
+    text-align: center;
+}
+
+
+.button-link{
+     display: block;
+    margin: 20px auto;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: skyblue;
+}
